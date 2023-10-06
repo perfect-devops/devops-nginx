@@ -70,5 +70,5 @@ jobs:
           script: |
             docker stop nginx || true
             docker rm nginx || true
-            docker pull ${{ job.outputs.image-uri }}
-            docker run -d --name nginx -p 80:80 ${{ job.outputs.image-uri }}
+            docker pull ${{ needs.build.outputs.image-uri }}
+            docker run -d --name nginx -p 80:80 ${{ needs.build.outputs.image-uri }}
