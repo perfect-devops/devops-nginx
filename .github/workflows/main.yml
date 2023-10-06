@@ -6,7 +6,7 @@ on:
       - main
 
 env:
-  AWS_REGION: eu-central-1
+  AWS_REGION: us-east-1
   ECR_REPOSITORY: public.ecr.aws/y1c4k6j6/pdevops-nginx
   IMAGE_TAG: ${{ github.sha }}
 
@@ -40,7 +40,6 @@ jobs:
 
       - name: Tag Docker image
         id: tag-image
-        #run: echo "::set-output name=image-uri::${{ steps.login-ecr.outputs.registry }}/${{ env.ECR_REPOSITORY }}:${{ env.IMAGE_TAG }}"
         run: echo "image-uri=${{ steps.login-ecr.outputs.registry }}/${{ env.ECR_REPOSITORY }}:${{ env.IMAGE_TAG }}" >> $GITHUB_OUTPUT
 
       - name: Push Docker image to Amazon ECR
