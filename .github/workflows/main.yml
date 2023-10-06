@@ -52,6 +52,8 @@ jobs:
           file: ./Dockerfile.aws
           push: true
           tags: ${{ steps.tag-image.outputs.image-uri }}
+    outputs:
+      image-uri: ${{ steps.tag-image.outputs.image-uri }}
   deploy:
     runs-on: ubuntu-latest
     needs: build
@@ -68,5 +70,5 @@ jobs:
           script: |
             docker stop nginx || true
             docker rm nginx || true
-            docker pull ${{ steps.tag-image.outputs.image-uri }}
-            docker run -d --name nginx -p 80:80 ${{ steps.tag-image.outputs.image-uri }}
+            docker pull ${{ job.outputs.image-uri }}
+            docker run -d --name nginx -p 80:80 ${{ job.outputs.image-uri }}
