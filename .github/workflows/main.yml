@@ -10,7 +10,7 @@ env:
   ECR_REPOSITORY: pdevops-nginx
   ECR_PUBLIC: public.ecr.aws/y1c4k6j6
   IMAGE_TAG: ${{ github.sha }}
-  URL: ${{ secrets.EC2_HOST }}
+  EC2_HOST: "ec2-3-72-40-31.eu-central-1.compute.amazonaws.com"
 
 jobs:
   build:
@@ -60,12 +60,12 @@ jobs:
     needs: build
     environment:
       name: development
-      url: "http://${{ env.URL }}"
+      url: "http://${{ env.EC2_HOST }}"
     steps:
       - name: Deploy Docker image to Amazon EC2
         uses: appleboy/ssh-action@master
         with:
-          host: ${{ secrets.EC2_HOST }}
+          host: ${{ env.EC2_HOST }}
           username: ${{ secrets.EC2_USERNAME }}
           key: ${{ secrets.EC2_PRIVATE_KEY }}
           script: |
