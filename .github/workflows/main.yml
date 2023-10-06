@@ -14,9 +14,6 @@ env:
 jobs:
   build:
     runs-on: ubuntu-latest
-    environment:
-      name: dev
-      url: ${{ secrets.EC2_HOST }}
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
