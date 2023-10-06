@@ -9,6 +9,7 @@ env:
   AWS_REGION: us-east-1
   ECR_REPOSITORY: pdevops-nginx
   IMAGE_TAG: ${{ github.sha }}
+  URL: ${{ secrets.EC2_HOST }}
 
 jobs:
   build:
@@ -59,7 +60,7 @@ jobs:
     needs: build
     environment:
       name: dev
-      url: "http://${{ secrets.EC2_HOST }}"
+      url: "http://${{ env.URL }}"
     steps:
       - name: Deploy Docker image to Amazon EC2
         uses: appleboy/ssh-action@master
