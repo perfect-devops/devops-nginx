@@ -58,7 +58,7 @@ jobs:
     runs-on: ubuntu-latest
     needs: build
     environment:
-      name: dev
+      name: "howkspace"
       url: "http://${{ env.URL }}"
     steps:
       - name: Deploy Docker image to Amazon EC2
