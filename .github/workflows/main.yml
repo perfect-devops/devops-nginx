@@ -6,11 +6,11 @@ on:
       - main
 
 env:
-  AWS_REGION: us-east-1
+  AWS_REGION: us-east-1 # AWS region must be us-east-1 for public ECR
   ECR_REPOSITORY: pdevops-nginx
   ECR_PUBLIC: public.ecr.aws/y1c4k6j6
   IMAGE_TAG: ${{ github.sha }}
-  EC2_HOST: "ec2-3-72-40-31.eu-central-1.compute.amazonaws.com"
+  EC2_HOST: "ec2-01.test-01.aws.perfect-devops.eu"
 
 jobs:
   build:
