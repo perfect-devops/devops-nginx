@@ -15,6 +15,7 @@ env:
 jobs:
   build:
     runs-on: ubuntu-latest
+    name: Build and push Docker image to Amazon ECR
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -57,6 +58,7 @@ jobs:
       image-uri: ${{ steps.tag-image.outputs.image-uri }}
   deploy:
     runs-on: ubuntu-latest
+    name: Deploy Docker image to Amazon EC2
     needs: build
     environment:
       name: development
