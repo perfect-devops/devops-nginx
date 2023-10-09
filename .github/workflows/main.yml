@@ -65,7 +65,7 @@ jobs:
 
   deploy-ec2:
     runs-on: ubuntu-latest
-    name: Deploy Docker image to Amazon EC2
+    name: Deploy to Amazon EC2
     needs: build
     environment:
       name: development
@@ -85,7 +85,7 @@ jobs:
 
   deploy-eks:
     runs-on: ubuntu-latest
-    name: Deploy Docker image to AWS EKS using Helm chart
+    name: Deploy to AWS EKS using Helm chart
     needs: build
     # environment:
     #   name: development
