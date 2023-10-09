@@ -118,7 +118,7 @@ jobs:
             -n nginx \
             -f nginx-values.yaml \
             --create-namespace \
-            --set image.repository=${{ env.ECR_PUBLIC }}/${{ env.ECR_REPOSITORY }} \
+            --set image.repository=${{ env.ECR_REPOSITORY }} \
             --set image.tag=${{ env.IMAGE_TAG }} \
             --version ${{ env.HELM_CHART_VERSION }} \
             --kubeconfig ${{ env.KUBECONFIG_PATH }}
