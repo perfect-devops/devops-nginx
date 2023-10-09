@@ -85,7 +85,7 @@ jobs:
 
   deploy-eks:
     runs-on: ubuntu-latest
-    name: Deploy to AWS EKS using Helm chart
+    name: Deploy to AWS EKS (Helm)
     needs: build
     # environment:
     #   name: development
