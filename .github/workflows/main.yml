@@ -116,6 +116,7 @@ jobs:
         run: |
           helm install nginx-release oci://registry-1.docker.io/bitnamicharts/nginx \
             -n nginx \
+            --create-namespace \
             --set image.repository=${{ needs.build.outputs.image-uri }} \
             --set image.tag=${{ env.IMAGE_TAG }} \
             --version ${{ env.HELM_CHART_VERSION }} \
