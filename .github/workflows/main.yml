@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - main
+  workflow_dispatch:
 
 env:
   AWS_ECR_REGION: us-east-1 # AWS region must be us-east-1 for public ECR
