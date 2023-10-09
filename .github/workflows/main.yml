@@ -91,6 +91,8 @@ jobs:
     #   name: development
     #   url: "http://${{ env.EC2_HOST }}"
     steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v4
         with:
