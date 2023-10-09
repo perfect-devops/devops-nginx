@@ -114,8 +114,9 @@ jobs:
 
       - name: Deploy Helm chart
         run: |
-          helm install nginx-release oci://registry-1.docker.io/bitnamicharts/nginx \
+          helm upgrade -i --force nginx-release oci://registry-1.docker.io/bitnamicharts/nginx \
             -n nginx \
+            -f nginx-values.yaml \
             --create-namespace \
             --set image.repository=${{ env.ECR_PUBLIC }}/${{ env.ECR_REPOSITORY }} \
             --set image.tag=${{ env.IMAGE_TAG }} \
