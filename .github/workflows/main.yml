@@ -15,7 +15,7 @@ env:
   HELM_CHART_NAME: bitnami/nginx
   HELM_CHART_VERSION: 15.3.1
   KUBECONFIG: ${{ secrets.KUBECONFIG }}
-  EKS_CLUSTER_NAME: "baseline-cluster"
+  EKS_CLUSTER_NAME: "test-02-cluster"
   KUBECONFIG_PATH: "~/.kube/config"
 
 jobs:
