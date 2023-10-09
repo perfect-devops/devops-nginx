@@ -63,7 +63,27 @@ jobs:
     outputs:
       image-uri: ${{ steps.tag-image.outputs.image-uri }}
 
-  deploy:
+  deploy-ec2:
+    runs-on: ubuntu-latest
+    name: Deploy Docker image to Amazon EC2
+    needs: build
+    environment:
+      name: development
+      url: "http://${{ env.EC2_HOST }}"
+    steps:
+      - name: Deploy Docker image to Amazon EC2
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ env.EC2_HOST }}
+          username: ${{ secrets.EC2_USERNAME }}
+          key: ${{ secrets.EC2_PRIVATE_KEY }}
+          script: |
+            docker stop nginx || true
+            docker rm nginx || true
+            docker pull ${{ needs.build.outputs.image-uri }}
+            docker run -d --name nginx -p 80:80 ${{ needs.build.outputs.image-uri }}
+
+  deploy-eks:
     runs-on: ubuntu-latest
     name: Deploy Docker image to AWS EKS using Helm chart
     needs: build
@@ -89,14 +109,14 @@ jobs:
           token: ${{ secrets.GITHUB_TOKEN }} # only needed if version is 'latest'
         id: install
 
-      - name: Add Helm repository
-        run: helm repo add stable https://charts.helm.sh/stable
+      - name: Add Helm Bitnami repository
+        run: helm repo add bitnami https://charts.bitnami.com/bitnami
 
-  #     - name: Deploy Helm chart
-  #       run: |
-  #         helm upgrade --install ${{ env.HELM_CHART_NAME }} stable/nginx-ingress \
-  #           --version ${{ env.HELM_CHART_VERSION }} \
-  #           --set image.repository=${{ env.ECR_PUBLIC }}/${{ env.ECR_REPOSITORY }} \
-  #           --set image.tag=${{ env.IMAGE_TAG }} \
-  #           --set controller.service.loadBalancerIP=${{ secrets.LOAD_BALANCER_IP }} \
-  #           --kubeconfig ${{ env.KUBECONFIG }}
+      - name: Deploy Helm chart
+        run: |
+          helm install nginx-release oci://registry-1.docker.io/bitnamicharts/nginx \
+            -n nginx \
+            --set image.repository=${{ needs.build.outputs.image-uri }} \
+            --set image.tag=${{ env.IMAGE_TAG }} \
+            --version ${{ env.HELM_CHART_VERSION }} \
+            --kubeconfig ${{ env.KUBECONFIG_PATH }}
