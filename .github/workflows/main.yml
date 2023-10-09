@@ -65,7 +65,7 @@ jobs:
 
   deploy-ec2:
     runs-on: ubuntu-latest
-    name: Deploy to Amazon EC2
+    name: Deploy to AWS EC2 (docker)
     needs: build
     environment:
       name: development
