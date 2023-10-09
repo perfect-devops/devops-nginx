@@ -12,6 +12,7 @@ env:
   ECR_PUBLIC: public.ecr.aws/y1c4k6j6
   IMAGE_TAG: ${{ github.sha }}
   EC2_HOST: "ec2-01.test-01.aws.perfect-devops.eu"
+  EKS_HOST: "test-02-cluster.test-02.aws.perfect-devops.eu"
   HELM_CHART_NAME: bitnami/nginx
   HELM_CHART_VERSION: 15.3.1
   KUBECONFIG: ${{ secrets.KUBECONFIG }}
@@ -87,9 +88,9 @@ jobs:
     runs-on: ubuntu-latest
     name: Deploy to AWS EKS (Helm)
     needs: build
-    # environment:
-    #   name: development
-    #   url: "http://${{ env.EC2_HOST }}"
+    environment:
+      name: staging
+      url: "http://${{ env.EKS_HOST }}"
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
