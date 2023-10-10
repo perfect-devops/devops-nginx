@@ -5,10 +5,11 @@ FROM public.ecr.aws/nginx/nginx
 COPY index.html /usr/share/nginx/html/
 
 # set git version
-ENV git_version $git_version
+ARG GIT_VERSION
+
 
 # replace ##DATE## with current date in index.html
 RUN sed -i "s/##DATE##/$(date)/" /usr/share/nginx/html/index.html
 
 # replace ##GIT_VERSION## with current git version in index.html
-RUN sed -i "s/##GIT_VERSION##/${git_version}/" /usr/share/nginx/html/index.html
+RUN sed -i "s/##GIT_VERSION##/${GIT_VERSION}/" /usr/share/nginx/html/index.html
