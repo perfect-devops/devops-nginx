@@ -59,5 +59,11 @@ jobs:
           file: ./Dockerfile.aws
           push: true
           tags: ${{ steps.tag-image.outputs.image-uri }}
+
+      - name: Create git tag
+        run: |
+          git tag ${{ env.IMAGE_TAG }}
+          git push origin ${{ env.IMAGE_TAG }}
+        
     outputs:
       image-uri: ${{ steps.tag-image.outputs.image-uri }}
