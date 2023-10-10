@@ -3,6 +3,11 @@ name: Build
 on:
   workflow_dispatch:
 
+permissions:
+  contents: read
+  pull-requests: write
+  issues: write
+  
 env:
   AWS_ECR_REGION: us-east-1 # AWS region must be us-east-1 for public ECR
   AWS_EKS_REGION: eu-central-1
