@@ -1,9 +1,6 @@
 name: CI/CD Pipeline
 
 on:
-  push:
-    branches:
-      - main
   workflow_dispatch:
 
 env:
@@ -64,65 +61,3 @@ jobs:
           tags: ${{ steps.tag-image.outputs.image-uri }}
     outputs:
       image-uri: ${{ steps.tag-image.outputs.image-uri }}
-
-  deploy-ec2:
-    runs-on: ubuntu-latest
-    name: Deploy to AWS EC2 (docker)
-    needs: build
-    environment:
-      name: development
-      url: "http://${{ env.EC2_HOST }}"
-    steps:
-      - name: Deploy Docker image to Amazon EC2
-        uses: appleboy/ssh-action@master
-        with:
-          host: ${{ env.EC2_HOST }}
-          username: ${{ secrets.EC2_USERNAME }}
-          key: ${{ secrets.EC2_PRIVATE_KEY }}
-          script: |
-            docker stop nginx || true
-            docker rm nginx || true
-            docker pull ${{ needs.build.outputs.image-uri }}
-            docker run -d --name nginx -p 80:80 ${{ needs.build.outputs.image-uri }}
-
-  deploy-eks:
-    runs-on: ubuntu-latest
-    name: Deploy to AWS EKS (Helm)
-    needs: build
-    environment:
-      name: staging
-      url: "http://${{ env.EKS_HOST }}"
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-      - name: Configure AWS credentials
-        uses: aws-actions/configure-aws-credentials@v4
-        with:
-          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          aws-region: ${{ env.AWS_EKS_REGION }}
-
-      - name: Get kubeconfig for EKS cluster
-        run: aws eks update-kubeconfig --name ${{ env.EKS_CLUSTER_NAME}} --region ${{ env.AWS_EKS_REGION }} --alias ${{ env.EKS_CLUSTER_NAME }} --kubeconfig ${{ env.KUBECONFIG_PATH }}
-        id: kubeconfig
-
-      - name: Install Helm
-        uses: azure/setup-helm@v3
-        with:
-          version: "latest" # default version is 'latest'
-          token: ${{ secrets.GITHUB_TOKEN }} # only needed if version is 'latest'
-        id: install
-
-      - name: Add Helm Bitnami repository
-        run: helm repo add bitnami https://charts.bitnami.com/bitnami
-
-      - name: Deploy Helm chart
-        run: |
-          helm upgrade -i --force nginx-release oci://registry-1.docker.io/bitnamicharts/nginx \
-            -n nginx \
-            -f nginx-values.yaml \
-            --create-namespace \
-            --set image.repository=${{ env.ECR_REPOSITORY }} \
-            --set image.tag=${{ env.IMAGE_TAG }} \
-            --version ${{ env.HELM_CHART_VERSION }} \
-            --kubeconfig ${{ env.KUBECONFIG_PATH }}
