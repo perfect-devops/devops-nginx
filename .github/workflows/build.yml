@@ -51,6 +51,8 @@ jobs:
           file: ./Dockerfile.aws
           push: false
           tags: ${{ env.ECR_REPOSITORY }}:${{ env.IMAGE_TAG }}
+          build-args: |
+            GIT_VERSION=2.0.${{ github.run_number }}
 
       - name: Tag Docker image
         id: tag-image

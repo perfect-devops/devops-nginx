@@ -4,5 +4,11 @@ FROM public.ecr.aws/nginx/nginx
 # Copy your index.html file into the container's default Nginx directory
 COPY index.html /usr/share/nginx/html/
 
+# set git version
+ENV git_version $git_version
+
 # replace ##DATE## with current date in index.html
 RUN sed -i "s/##DATE##/$(date)/" /usr/share/nginx/html/index.html
+
+# replace ##GIT_VERSION## with current git version in index.html
+RUN sed -i "s/##DATE##/$(git_version)/" /usr/share/nginx/html/index.html
