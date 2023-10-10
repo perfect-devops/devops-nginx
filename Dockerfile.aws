@@ -11,4 +11,4 @@ ENV git_version $git_version
 RUN sed -i "s/##DATE##/$(date)/" /usr/share/nginx/html/index.html
 
 # replace ##GIT_VERSION## with current git version in index.html
-RUN sed -i "s/##GIT_VERSION##/$(git_version)/" /usr/share/nginx/html/index.html
+RUN sed -i "s/##GIT_VERSION##/${git_version}/" /usr/share/nginx/html/index.html
