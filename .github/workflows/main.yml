@@ -16,7 +16,7 @@ env:
   AWS_EKS_REGION: eu-central-1
   ECR_REPOSITORY: pdevops-nginx
   ECR_PUBLIC: public.ecr.aws/y1c4k6j6
-  IMAGE_TAG: ${{ github.sha }}
+  IMAGE_TAG: 1.0.${{ github.run_number }}
   EC2_HOST: "ec2-01.test-01.aws.perfect-devops.eu"
   EKS_HOST: "test-02-cluster.test-02.aws.perfect-devops.eu"
   HELM_CHART_NAME: bitnami/nginx
