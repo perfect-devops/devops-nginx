@@ -49,13 +49,13 @@ jobs:
       - name: Tag Docker image
         id: tag-image
         run: echo "image-uri=${{ env.ECR_PUBLIC }}/${{ env.ECR_REPOSITORY }}:${{ env.IMAGE_TAG }}" >> $GITHUB_OUTPUT
-        
+
       - name: Build and Push Docker image to Amazon ECR
         id: push-image
         uses: docker/build-push-action@v5
         with:
           context: .
-          file: ./Dockerfile
+          file: ./Dockerfile.generic
           push: true
           tags: ${{ steps.tag-image.outputs.image-uri }}
           build-args: |
