@@ -55,7 +55,7 @@ jobs:
         uses: docker/build-push-action@v5
         with:
           context: .
-          file: ./Dockerfile.aws
+          file: ./Dockerfile
           push: true
           tags: ${{ steps.tag-image.outputs.image-uri }}
           build-args: |

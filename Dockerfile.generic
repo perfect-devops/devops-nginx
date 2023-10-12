@@ -4,5 +4,14 @@ FROM nginx
 # Copy your index.html file into the container's default Nginx directory
 COPY index.html /usr/share/nginx/html/
 
+# set git version
+ARG GIT_VERSION
+
+
 # replace ##DATE## with current date in index.html
 RUN sed -i "s/##DATE##/$(date)/" /usr/share/nginx/html/index.html
+
+# replace ##GIT_VERSION## with current git version in index.html
+RUN sed -i "s/##GIT_VERSION##/${GIT_VERSION}/" /usr/share/nginx/html/index.html
+
+RUN cat /usr/share/nginx/html/index.html
